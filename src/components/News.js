@@ -41,6 +41,7 @@ export class News extends Component {
         this.setState( { loading: true } );
 
         const url = `https://newsapi.org/v2/top-headlines?country=${ country }&category=${ category }&apiKey=${ apiKey }&page=${ page }&pageSize=${ pageSize }`;
+        console.log(url);
         const data = await fetch( url );
         const parsedData = await data.json();
         if ( parsedData.status == 'error' ) {
@@ -59,14 +60,15 @@ export class News extends Component {
 
     handlePrevClick = async () => {
 
-        this.setState( { page: this.state.page - 1 } );
+        await this.setState( { page: this.state.page - 1 } );
         this.updateNews();
     };
 
     handleNextClick = async () => {
 
-        this.setState( { page: this.state.page + 1 } );
-        this.updateNews();
+        // await this.setState( { page: this.state.page + 1 } );
+        // this.updateNews();
+        this.setState( { page: this.state.page + 1 }, () => { this.updateNews() } );
     };
     render () {
         const { articles, loading, page, totalResults, error } = this.state;
